@@ -793,6 +793,10 @@ public class FishingManager extends Function {
             stream = stream.filter(LootImpl::isShowInFinder);
         }
         return stream.filter(loot -> {
+            if (plugin.getEffectManager().getRodEffect(fishingCondition.getRodID()).isIgnoreLootRequirements()){
+                return true;
+            }
+
             RequirementInterface[] requirements = loot.getRequirements();
             if (requirements == null) {
                 return true;

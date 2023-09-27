@@ -37,6 +37,8 @@ public class Effect {
     private String specialRodID;
     private RequirementInterface[] requirements;
 
+    private boolean ignoreLootRequirements;
+
     public Effect() {
         this.sizeMultiplier = 1;
         this.scoreMultiplier = 1;
@@ -73,6 +75,14 @@ public class Effect {
 
     public void setScoreMultiplier(double scoreMultiplier) {
         this.scoreMultiplier = scoreMultiplier;
+    }
+
+    public boolean isIgnoreLootRequirements() {
+        return ignoreLootRequirements;
+    }
+
+    public void setIgnoreLootRequirements(boolean ignoreLootRequirements) {
+        this.ignoreLootRequirements = ignoreLootRequirements;
     }
 
     public int getDifficulty() {

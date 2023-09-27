@@ -252,6 +252,7 @@ public class ConfigUtils {
                 case "score" -> effect.setScoreMultiplier(section.getDouble(modifier));
                 case "size-multiply" -> effect.setSizeMultiplier(section.getDouble(modifier));
                 case "lava-fishing" -> effect.setCanLavaFishing(section.getBoolean(modifier, false));
+                case "ignore-loot-requirements" -> effect.setIgnoreLootRequirements(section.getBoolean(modifier, false));
             }
         }
         return effect;
