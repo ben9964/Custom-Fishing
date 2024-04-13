@@ -33,7 +33,6 @@ import net.momirealms.customfishing.integration.papi.PlaceholderManager;
 import net.momirealms.customfishing.integration.quest.BattlePassCFQuest;
 import net.momirealms.customfishing.integration.quest.ClueScrollCFQuest;
 import net.momirealms.customfishing.integration.quest.NewBetonQuestCFQuest;
-import net.momirealms.customfishing.integration.quest.OldBetonQuestCFQuest;
 import net.momirealms.customfishing.integration.season.CustomCropsSeasonImpl;
 import net.momirealms.customfishing.integration.season.RealisticSeasonsImpl;
 import net.momirealms.customfishing.integration.skill.AureliumsImpl;
@@ -220,11 +219,6 @@ public class IntegrationManager extends Function {
             ClueScrollCFQuest clueScrollCFQuest = new ClueScrollCFQuest();
             Bukkit.getPluginManager().registerEvents(clueScrollCFQuest, plugin);
             hookMessage("ClueScrolls");
-        }
-        if (pluginManager.isPluginEnabled("BetonQuest")) {
-            if (Bukkit.getPluginManager().getPlugin("BetonQuest").getDescription().getVersion().startsWith("2")) NewBetonQuestCFQuest.register();
-            else OldBetonQuestCFQuest.register();
-            hookMessage("BetonQuest");
         }
         if (pluginManager.isPluginEnabled("BattlePass")) {
             BattlePassCFQuest battlePassCFQuest = new BattlePassCFQuest();

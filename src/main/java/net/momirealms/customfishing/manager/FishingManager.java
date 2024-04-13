@@ -525,7 +525,7 @@ public class FishingManager extends Function {
         if (Competition.currentCompetition != null) {
             float score = Competition.currentCompetition.getGoal() == CompetitionGoal.MAX_SIZE
                        || Competition.currentCompetition.getGoal() == CompetitionGoal.TOTAL_SIZE
-                       ? dropPair.right().size() : (float) ((float) droppedItem.getScore() * scoreMultiplier);
+                       ? dropPair.right() != null ? dropPair.right().size() : (float) 0 : (float) ((float) droppedItem.getScore() * scoreMultiplier);
             Competition.currentCompetition.refreshData(player, score, fishResultEvent.isDouble());
             Competition.currentCompetition.tryJoinCompetition(player);
         }
