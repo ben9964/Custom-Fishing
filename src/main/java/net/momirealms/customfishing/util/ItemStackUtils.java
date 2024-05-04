@@ -242,7 +242,9 @@ public class ItemStackUtils {
             fishMetaCompound.setFloat("bonus", droppedItem.getSizeBonus());
         }
         float size = replaceAndSetSizeProperties(droppedItem.getSize(), nbtItem, sizeMultiplier);
-        replacePlaceholderInDisplay(nbtItem, player);
+
+        if (player != null) replacePlaceholderInDisplay(nbtItem, player);
+
         itemStack.setItemMeta(nbtItem.getItem().getItemMeta());
         return new FishMeta(size, droppedItem.getBasicPrice(), droppedItem.getSizeBonus());
     }
