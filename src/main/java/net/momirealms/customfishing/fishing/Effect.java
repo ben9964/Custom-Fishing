@@ -132,10 +132,10 @@ public class Effect {
                 this.weightMD.put(group, Optional.ofNullable(this.weightMD.get(group)).orElse(1d) + en.getValue());
             }
         }
-        this.timeModifier += (anotherEffect.getTimeModifier() - 1);
-        this.scoreMultiplier += (anotherEffect.getScoreMultiplier() - 1);
-        this.sizeMultiplier += (anotherEffect.getSizeMultiplier() - 1);
-        this.doubleLootChance += anotherEffect.getDoubleLootChance();
+        this.timeModifier *= anotherEffect.getTimeModifier();
+        this.scoreMultiplier *= anotherEffect.getScoreMultiplier();
+        this.sizeMultiplier *= anotherEffect.getSizeMultiplier();
+        this.doubleLootChance *= anotherEffect.getDoubleLootChance();
         this.difficulty += anotherEffect.getDifficulty();
         if (anotherEffect.canLavaFishing()) this.canLavaFishing = true;
     }

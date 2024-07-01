@@ -244,8 +244,22 @@ public class FishingManager extends Function {
         if (baitRealItem != null) baitRealItem.setAmount(baitRealItem.getAmount() - 1);
         int lureLevel = rodOnMainHand ? mainHandItem.getEnchantmentLevel(Enchantment.LURE) : offHandItem.getEnchantmentLevel(Enchantment.LURE);
 
-        fishHook.setMaxWaitTime((int) (fishHook.getMaxWaitTime() * initialEffect.getTimeModifier()));
-        fishHook.setMinWaitTime((int) (fishHook.getMinWaitTime() * initialEffect.getTimeModifier()));
+        int maxWaitTime = (int) (fishHook.getMaxWaitTime() * initialEffect.getTimeModifier());
+        int minWaitTime = (int) (fishHook.getMinWaitTime() * initialEffect.getTimeModifier());
+
+//        if (maxWaitTime <= 0) {
+//            maxWaitTime = 1;
+//        }
+//
+//        if (minWaitTime <= 0) {
+//            minWaitTime = 0;
+//        }
+//
+//        if (minWaitTime > maxWaitTime) {
+//            minWaitTime = maxWaitTime;
+//        }
+
+        fishHook.setWaitTime(minWaitTime, maxWaitTime);
 
         this.nextEffect.put(player.getUniqueId(), initialEffect);
         if (ConfigManager.needRodToFish && !initialEffect.hasSpecialRod()) {
