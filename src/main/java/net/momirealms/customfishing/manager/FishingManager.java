@@ -88,7 +88,6 @@ public class FishingManager extends Function {
     private final InteractListener interactListener;
     private final ConsumeItemListener consumeItemListener;
     private PickUpListener pickUpListener;
-    private JobsRebornXPListener jobsRebornXPListener;
     private final JoinQuitListener joinQuitListener;
     private final BreakBlockListener breakBlockListener;
     private final HashMap<UUID, Long> coolDown;
@@ -131,10 +130,6 @@ public class FishingManager extends Function {
             this.pickUpListener = new PickUpListener();
             Bukkit.getPluginManager().registerEvents(this.pickUpListener, plugin);
         }
-        if (ConfigManager.disableJobsXp) {
-            this.jobsRebornXPListener = new JobsRebornXPListener();
-            Bukkit.getPluginManager().registerEvents(this.jobsRebornXPListener, plugin);
-        }
     }
 
     @Override
@@ -145,7 +140,6 @@ public class FishingManager extends Function {
         HandlerList.unregisterAll(this.consumeItemListener);
         HandlerList.unregisterAll(this.joinQuitListener);
         if (this.pickUpListener != null) HandlerList.unregisterAll(this.pickUpListener);
-        if (this.jobsRebornXPListener != null) HandlerList.unregisterAll(this.jobsRebornXPListener);
         for (BobberCheckTask bobberCheckTask : hookCheckTaskMap.values()) {
             bobberCheckTask.stop();
         }

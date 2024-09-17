@@ -103,12 +103,10 @@ public class ConfigUtils {
                     case "biome" -> requirements.add(new BiomeImpl(null, new HashSet<>(section.getStringList(type))));
                     case "weather" -> requirements.add(new WeatherImpl(null, section.getStringList(type)));
                     case "ypos" -> requirements.add(new YPosImpl(null, section.getStringList(type)));
-                    case "season" -> requirements.add(new SeasonImpl(null, section.getStringList(type)));
                     case "world" -> requirements.add(new WorldImpl(null, section.getStringList(type)));
                     case "permission" -> requirements.add(new PermissionImpl(null, section.getString(type)));
                     case "time" -> requirements.add(new TimeImpl(null, section.getStringList(type)));
                     case "skill-level" -> requirements.add(new SkillLevelImpl(null, section.getInt(type)));
-                    case "job-level" -> requirements.add(new JobLevelImpl(null, section.getInt(type)));
                     case "date" -> requirements.add(new DateImpl(null, new HashSet<>(section.getStringList(type))));
                     case "rod" -> requirements.add(new RodImpl(null, new HashSet<>(section.getStringList(type))));
                     case "bait" -> requirements.add(new BaitImpl(null, new HashSet<>(section.getStringList(type))));
@@ -134,12 +132,10 @@ public class ConfigUtils {
                     case "biome" -> requirements.add(new BiomeImpl(msg, new HashSet<>(innerSec.getStringList("value"))));
                     case "weather" -> requirements.add(new WeatherImpl(msg, innerSec.getStringList("value")));
                     case "ypos" -> requirements.add(new YPosImpl(msg, innerSec.getStringList("value")));
-                    case "season" -> requirements.add(new SeasonImpl(msg, innerSec.getStringList("value")));
                     case "world" -> requirements.add(new WorldImpl(msg, innerSec.getStringList("value")));
                     case "permission" -> requirements.add(new PermissionImpl(msg, innerSec.getString("value")));
                     case "time" -> requirements.add(new TimeImpl(msg, innerSec.getStringList("value")));
                     case "skill-level" -> requirements.add(new SkillLevelImpl(msg, innerSec.getInt("value")));
-                    case "job-level" -> requirements.add(new JobLevelImpl(msg, innerSec.getInt("value")));
                     case "date" -> requirements.add(new DateImpl(msg, new HashSet<>(innerSec.getStringList("value"))));
                     case "rod" -> requirements.add(new RodImpl(msg, new HashSet<>(innerSec.getStringList("value"))));
                     case "bait" -> requirements.add(new BaitImpl(msg, new HashSet<>(innerSec.getStringList("value"))));
@@ -184,12 +180,6 @@ public class ConfigUtils {
                         }
                         case "skill-xp" -> {
                             actions.add(new SkillXPImpl(
-                                    innerSec.getDouble("value"),
-                                    chance
-                            ));
-                        }
-                        case "job-xp" -> {
-                            actions.add(new JobXPImpl(
                                     innerSec.getDouble("value"),
                                     chance
                             ));

@@ -88,7 +88,6 @@ public final class CustomFishing extends JavaPlugin {
         this.scheduler = new Scheduler(this);
         this.reload();
         this.registerCommands();
-        this.registerQuests();
         Reflection.load();
         AdventureUtils.consoleMessage("[CustomFishing] Plugin Enabled!");
         if (ConfigManager.bStats) new Metrics(this, 16648);
@@ -144,10 +143,6 @@ public final class CustomFishing extends JavaPlugin {
         LibraryLoader.load("org.mariadb.jdbc","mariadb-java-client","3.1.4", libRepo);
         LibraryLoader.load("mysql","mysql-connector-java","8.0.30", libRepo);
         LibraryLoader.load("commons-io","commons-io","2.11.0", libRepo);
-    }
-
-    private void registerQuests() {
-        this.integrationManager.registerQuests();
     }
 
     public IntegrationManager getIntegrationManager() {

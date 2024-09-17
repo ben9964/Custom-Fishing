@@ -7,7 +7,6 @@ import net.momirealms.customfishing.commands.AbstractSubCommand;
 import net.momirealms.customfishing.fishing.Effect;
 import net.momirealms.customfishing.fishing.FishingCondition;
 import net.momirealms.customfishing.fishing.loot.LootImpl;
-import net.momirealms.customfishing.integration.SeasonInterface;
 import net.momirealms.customfishing.util.AdventureUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -38,11 +37,6 @@ public class DebugCommand extends AbstractSubCommand {
             }
             case "world" -> {
                 AdventureUtils.playerMessage(player, player.getWorld().getName());
-            }
-            case "season" -> {
-                SeasonInterface seasonInterface = CustomFishing.getInstance().getIntegrationManager().getSeasonInterface();
-                if (seasonInterface == null) return true;
-                AdventureUtils.playerMessage(player, seasonInterface.getSeason(player.getLocation().getWorld()));
             }
             case "loot-chance" -> {
                 Effect initial = CustomFishing.getInstance().getFishingManager().getInitialEffect(player);

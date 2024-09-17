@@ -20,24 +20,11 @@ package net.momirealms.customfishing.manager;
 import net.momirealms.customfishing.CustomFishing;
 import net.momirealms.customfishing.helper.Log;
 import net.momirealms.customfishing.integration.*;
-import net.momirealms.customfishing.integration.block.ItemsAdderBlockImpl;
-import net.momirealms.customfishing.integration.block.OraxenBlockImpl;
 import net.momirealms.customfishing.integration.block.VanillaBlockImpl;
-import net.momirealms.customfishing.integration.enchantment.AEImpl;
 import net.momirealms.customfishing.integration.enchantment.VanillaImpl;
 import net.momirealms.customfishing.integration.item.*;
-import net.momirealms.customfishing.integration.job.EcoJobsImpl;
-import net.momirealms.customfishing.integration.job.JobsRebornImpl;
 import net.momirealms.customfishing.integration.mob.MythicMobsMobImpl;
 import net.momirealms.customfishing.integration.papi.PlaceholderManager;
-import net.momirealms.customfishing.integration.quest.BattlePassCFQuest;
-import net.momirealms.customfishing.integration.quest.ClueScrollCFQuest;
-import net.momirealms.customfishing.integration.quest.NewBetonQuestCFQuest;
-import net.momirealms.customfishing.integration.season.CustomCropsSeasonImpl;
-import net.momirealms.customfishing.integration.season.RealisticSeasonsImpl;
-import net.momirealms.customfishing.integration.skill.AureliumsImpl;
-import net.momirealms.customfishing.integration.skill.EcoSkillsImpl;
-import net.momirealms.customfishing.integration.skill.MMOCoreImpl;
 import net.momirealms.customfishing.integration.skill.mcMMOImpl;
 import net.momirealms.customfishing.object.Function;
 import net.momirealms.customfishing.util.AdventureUtils;
@@ -58,12 +45,10 @@ import java.util.List;
 
 public class IntegrationManager extends Function {
 
-    private SeasonInterface seasonInterface;
     private SkillInterface skillInterface;
     private ItemInterface[] itemInterfaces;
     private MobInterface mobInterface;
     private BlockInterface blockInterface;
-    private JobInterface jobInterface;
     private EnchantmentInterface enchantmentInterface;
     private final PlaceholderManager placeholderManager;
     private VaultHook vaultHook;
@@ -79,9 +64,7 @@ public class IntegrationManager extends Function {
     @Override
     public void load() {
         this.placeholderManager.load();
-        hookSeasons();
         hookSkills();
-        hookJobs();
         hookItems();
         hookVault();
         hookMobs();
@@ -91,28 +74,16 @@ public class IntegrationManager extends Function {
 
     @Override
     public void unload() {
-        this.seasonInterface = null;
         this.skillInterface = null;
         this.itemInterfaces = null;
         this.mobInterface = null;
         this.blockInterface = null;
-        this.jobInterface = null;
         this.enchantmentInterface = null;
         this.placeholderManager.unload();
     }
 
     private void hookEnchants() {
-        if (pluginManager.isPluginEnabled("AdvancedEnchantments")) {
-            this.enchantmentInterface = new AEImpl();
-            hookMessage("AdvancedEnchantments");
-        }
-        else if (pluginManager.isPluginEnabled("EcoEnchants")) {
-            this.enchantmentInterface = new VanillaImpl();
-            hookMessage("EcoEnchants");
-        }
-        else {
-            this.enchantmentInterface = new VanillaImpl();
-        }
+        this.enchantmentInterface = new VanillaImpl();
     }
 
     private void hookMobs() {
@@ -122,54 +93,13 @@ public class IntegrationManager extends Function {
     }
 
     private void hookBlocks() {
-        if (pluginManager.isPluginEnabled("Oraxen")) {
-            this.blockInterface = new OraxenBlockImpl();
-        }
-        else if (pluginManager.isPluginEnabled("ItemsAdder")) {
-            this.blockInterface = new ItemsAdderBlockImpl();
-        }
-        else {
-            this.blockInterface = new VanillaBlockImpl();
-        }
-    }
-
-    private void hookSeasons() {
-        if (pluginManager.isPluginEnabled("RealisticSeasons")) {
-            this.seasonInterface = new RealisticSeasonsImpl();
-            hookMessage("RealisticSeasons");
-        } else if (pluginManager.isPluginEnabled("CustomCrops")) {
-            this.seasonInterface = new CustomCropsSeasonImpl();
-            hookMessage("CustomCrops");
-        }
+        this.blockInterface = new VanillaBlockImpl();
     }
 
     private void hookSkills() {
         if (pluginManager.isPluginEnabled("mcMMO")) {
             this.skillInterface = new mcMMOImpl();
             hookMessage("mcMMO");
-        } else if (pluginManager.isPluginEnabled("MMOCore")) {
-            this.skillInterface = new MMOCoreImpl(ConfigUtils.getConfig("config.yml").getString("other-settings.MMOCore-profession-name", "fishing"));
-            hookMessage("MMOCore");
-        } else if (pluginManager.isPluginEnabled("AureliumSkills")) {
-            this.skillInterface = new AureliumsImpl();
-            hookMessage("AureliumSkills");
-        } else if (pluginManager.isPluginEnabled("EcoSkills")) {
-            this.skillInterface = new EcoSkillsImpl();
-            hookMessage("EcoSkills");
-        }
-    }
-
-    private void hookJobs() {
-        if (this.jobInterface instanceof JobsRebornImpl jobsReborn) {
-            HandlerList.unregisterAll(jobsReborn);
-        }
-        if (pluginManager.isPluginEnabled("Jobs")) {
-            this.jobInterface = new JobsRebornImpl();
-            Bukkit.getPluginManager().registerEvents((Listener) jobInterface, plugin);
-            hookMessage("JobsReborn");
-        } else if (pluginManager.isPluginEnabled("EcoJobs")) {
-            this.jobInterface = new EcoJobsImpl();
-            hookMessage("EcoJobs");
         }
     }
 
@@ -185,14 +115,6 @@ public class IntegrationManager extends Function {
 
     private void hookItems() {
         List<ItemInterface> itemInterfaceList = new ArrayList<>();
-        if (pluginManager.isPluginEnabled("ItemsAdder")) {
-            itemInterfaceList.add(new ItemsAdderItemImpl());
-            hookMessage("ItemsAdder");
-        }
-        if (pluginManager.isPluginEnabled("Oraxen")) {
-            itemInterfaceList.add(new OraxenItemImpl());
-            hookMessage("Oraxen");
-        }
         if (pluginManager.isPluginEnabled("MMOItems")) {
             itemInterfaceList.add(new MMOItemsItemImpl());
             hookMessage("MMOItems");
@@ -201,35 +123,9 @@ public class IntegrationManager extends Function {
             itemInterfaceList.add(new MythicMobsItemImpl());
             hookMessage("MythicMobs");
         }
-        if (pluginManager.isPluginEnabled("NeigeItems")) {
-            itemInterfaceList.add(new NeigeItemsImpl());
-            hookMessage("NeigeItems");
-        }
+
         itemInterfaceList.add(new CustomFishingItemImpl(plugin));
         this.itemInterfaces = itemInterfaceList.toArray(new ItemInterface[0]);
-
-        if (pluginManager.isPluginEnabled("eco")) {
-            EcoItemRegister.registerItems();
-            hookMessage("eco");
-        }
-    }
-
-    public void registerQuests() {
-        if (pluginManager.isPluginEnabled("ClueScrolls")) {
-            ClueScrollCFQuest clueScrollCFQuest = new ClueScrollCFQuest();
-            Bukkit.getPluginManager().registerEvents(clueScrollCFQuest, plugin);
-            hookMessage("ClueScrolls");
-        }
-        if (pluginManager.isPluginEnabled("BattlePass")) {
-            BattlePassCFQuest battlePassCFQuest = new BattlePassCFQuest();
-            Bukkit.getPluginManager().registerEvents(battlePassCFQuest, plugin);
-            hookMessage("BattlePass");
-        }
-    }
-
-    @Nullable
-    public SeasonInterface getSeasonInterface() {
-        return seasonInterface;
     }
 
     @Nullable
@@ -260,11 +156,6 @@ public class IntegrationManager extends Function {
     @NotNull
     public EnchantmentInterface getEnchantmentInterface() {
         return enchantmentInterface;
-    }
-
-    @Nullable
-    public JobInterface getJobInterface() {
-        return jobInterface;
     }
 
     @NotNull
