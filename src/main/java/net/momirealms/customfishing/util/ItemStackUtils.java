@@ -20,6 +20,7 @@ package net.momirealms.customfishing.util;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NBTListCompound;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.momirealms.customfishing.CustomFishing;
@@ -42,10 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class ItemStackUtils {
 
@@ -66,40 +64,42 @@ public class ItemStackUtils {
             if (itemStack.getType() == Material.ENCHANTED_BOOK){
                 EnchantmentStorageMeta meta = (EnchantmentStorageMeta) itemMeta;
                 item.getEnchantment().forEach(enchantment -> meta.addStoredEnchant(Objects.requireNonNull(Enchantment.getByKey(enchantment.key())),enchantment.level(),true));
-                itemStack.setItemMeta(meta);
             }
             else {
                 item.getEnchantment().forEach(enchantment -> itemMeta.addEnchant(Objects.requireNonNull(Enchantment.getByKey(enchantment.key())),enchantment.level(),true));
-                itemStack.setItemMeta(itemMeta);
             }
         }
-        else {
-            itemStack.setItemMeta(itemMeta);
-        }
-        NBTItem nbtItem = new NBTItem(itemStack);
+
         if (item.getName() != null) {
-            NBTCompound display = nbtItem.addCompound("display");
             String name  = item.getName();
             if (name.contains("&") || name.contains("§")){
                 name = AdventureUtils.replaceLegacy(name);
             }
-            display.setString("Name", GsonComponentSerializer.gson().serialize(MiniMessage.miniMessage().deserialize("<!i>" + name)));
+            itemMeta.displayName(
+                    MiniMessage.miniMessage().deserialize("<!i>" + name)
+            );
         }
+
         if (item.getLore() != null) {
-            NBTCompound display = nbtItem.addCompound("display");
-            List<String> lore = display.getStringList("Lore");
+            List<Component> lore = new ArrayList<>();
             item.getLore().forEach(line -> {
                 if (line.contains("&") || line.contains("§")){
                     line = AdventureUtils.replaceLegacy(line);
                 }
-                lore.add(GsonComponentSerializer.gson().serialize(MiniMessage.miniMessage().deserialize("<!i>" + line)));
+
+                lore.add(MiniMessage.miniMessage().deserialize("<!i>" + line));
             });
+
+            itemMeta.lore(lore);
         }
+
+        NBTItem nbtItem = new NBTItem(itemStack);
         if (item.getCfTag() != null) {
             NBTCompound cfCompound = nbtItem.addCompound("CustomFishing");
             cfCompound.setString("type", item.getCfTag()[0]);
             cfCompound.setString("id", item.getCfTag()[1]);
         }
+
         if (item.getHead64() != null) {
             NBTCompound nbtCompound = nbtItem.addCompound("SkullOwner");
             nbtCompound.setUUID("Id", item.isHeadStackable() ? UUID.nameUUIDFromBytes(item.getKey().getBytes()) : UUID.randomUUID());
@@ -110,6 +110,9 @@ public class ItemStackUtils {
             nbtItem.setString("Totem", item.getTotem());
         }
         if (item.getNbt() != null) NBTUtils.setTags(item.getNbt(), nbtItem);
+
+        itemStack.setItemMeta(itemMeta);
+
         return nbtItem.getItem();
     }
 
