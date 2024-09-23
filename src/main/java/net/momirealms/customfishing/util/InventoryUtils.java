@@ -19,7 +19,6 @@ package net.momirealms.customfishing.util;
 
 import net.kyori.adventure.text.Component;
 import net.momirealms.customfishing.CustomFishing;
-import net.momirealms.customfishing.object.Reflection;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -124,28 +123,7 @@ public class InventoryUtils {
         return stacks;
     }
 
-    @NotNull
-    public static Inventory createInventory(InventoryHolder inventoryHolder, int size, Component component) {
-        try {
-            Method createInvMethod = Reflection.bukkitClass.getMethod("createInventory", InventoryHolder.class, int.class, Reflection.componentClass);
-            return (Inventory) createInvMethod.invoke(null, inventoryHolder, size, AdventureUtils.getPaperComponent(component));
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException exception) {
-            exception.printStackTrace();
-            throw new RuntimeException("Failed to create inventory");
-        }
-    }
-
     public static Inventory createInventory(InventoryHolder inventoryHolder, int size, String title) {
-        if (CustomFishing.getInstance().getVersionHelper().isSpigot()) {
-            return Bukkit.createInventory(inventoryHolder, size, AdventureUtils.replaceMiniMessage(title));
-        } else {
-            try {
-                Method createInvMethod = Reflection.bukkitClass.getMethod("createInventory", InventoryHolder.class, int.class, Reflection.componentClass);
-                return (Inventory) createInvMethod.invoke(null, inventoryHolder, size, AdventureUtils.getPaperComponent(AdventureUtils.getComponentFromMiniMessage(title)));
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException exception) {
-                exception.printStackTrace();
-                throw new RuntimeException("Failed to create inventory");
-            }
-        }
+        return Bukkit.createInventory(inventoryHolder, size, AdventureUtils.replaceMiniMessage(title));
     }
 }

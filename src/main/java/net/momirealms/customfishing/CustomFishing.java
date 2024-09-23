@@ -27,7 +27,6 @@ import net.momirealms.customfishing.helper.LibraryLoader;
 import net.momirealms.customfishing.helper.Log;
 import net.momirealms.customfishing.helper.VersionHelper;
 import net.momirealms.customfishing.manager.*;
-import net.momirealms.customfishing.object.Reflection;
 import net.momirealms.customfishing.scheduler.Scheduler;
 import net.momirealms.customfishing.util.AdventureUtils;
 import org.apache.commons.io.FileUtils;
@@ -88,7 +87,6 @@ public final class CustomFishing extends JavaPlugin {
         this.scheduler = new Scheduler(this);
         this.reload();
         this.registerCommands();
-        Reflection.load();
         AdventureUtils.consoleMessage("[CustomFishing] Plugin Enabled!");
         if (ConfigManager.bStats) new Metrics(this, 16648);
         if (ConfigManager.updateChecker) this.versionHelper.checkUpdate();

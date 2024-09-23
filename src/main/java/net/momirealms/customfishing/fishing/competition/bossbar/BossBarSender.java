@@ -17,21 +17,13 @@
 
 package net.momirealms.customfishing.fishing.competition.bossbar;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.events.InternalStructure;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.momirealms.customfishing.CustomFishing;
 import net.momirealms.customfishing.fishing.competition.Competition;
 import net.momirealms.customfishing.object.DynamicText;
-import net.momirealms.customfishing.object.Reflection;
-import net.momirealms.customfishing.util.AdventureUtils;
-import org.bukkit.boss.BarColor;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -51,6 +43,8 @@ public class BossBarSender {
     private final BossBarConfig config;
     private boolean isShown;
     private boolean hasClaimedJoin;
+
+    private transient BossBar activeBar;
 
     public void setText(int position) {
         this.text = texts[position];
@@ -73,7 +67,7 @@ public class BossBarSender {
 
     public void show() {
         this.isShown = true;
-        CustomFishing.getProtocolManager().sendServerPacket(player, getCreatePacket());
+        createBossBar();
         senderTask = CustomFishing.getInstance().getScheduler().runTaskTimerAsync(() -> {
             if (size != 1) {
                 timer_2++;
@@ -92,8 +86,8 @@ public class BossBarSender {
                 timer_1 = 0;
                 if (text.update() || force) {
                     force = false;
-                    CustomFishing.getProtocolManager().sendServerPacket(player, getUpdatePacket());
-                    CustomFishing.getProtocolManager().sendServerPacket(player, getProgressPacket());
+                    updateName();
+                    updateProgress();
                 }
             }
         }, 50, 50, TimeUnit.MILLISECONDS);
@@ -108,55 +102,23 @@ public class BossBarSender {
     }
 
     public void hide() {
-        sendRemovePacket();
+        player.hideBossBar(activeBar);
         if (senderTask != null && !senderTask.isCancelled()) senderTask.cancel(false);
         this.isShown = false;
+        this.activeBar = null;
     }
 
-    private PacketContainer getUpdatePacket() {
-        PacketContainer packet = new PacketContainer(PacketType.Play.Server.BOSS);
-        packet.getModifier().write(0, uuid);
-        try {
-            Object chatComponent = Reflection.iChatComponentMethod.invoke(null, GsonComponentSerializer.gson().serialize(MiniMessage.miniMessage().deserialize(AdventureUtils.replaceLegacy(text.getLatestValue()))));
-            Object updatePacket = Reflection.updateConstructor.newInstance(chatComponent);
-            packet.getModifier().write(1, updatePacket);
-        } catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {
-            throw new RuntimeException(e);
-        }
-        return packet;
+    private void updateName() {
+        this.activeBar.name(MiniMessage.miniMessage().deserialize(text.getLatestValue()));
     }
 
-    private PacketContainer getProgressPacket() {
-        PacketContainer packet = new PacketContainer(PacketType.Play.Server.BOSS);
-        packet.getModifier().write(0, uuid);
-        try {
-            Object updatePacket = Reflection.progressConstructor.newInstance(Competition.currentCompetition.getProgress());
-            packet.getModifier().write(1, updatePacket);
-        } catch (InvocationTargetException | IllegalAccessException | InstantiationException e) {
-            throw new RuntimeException(e);
-        }
-        return packet;
+    private void updateProgress() {
+        this.activeBar.progress(Competition.currentCompetition.getProgress());
     }
 
-    private PacketContainer getCreatePacket() {
-        PacketContainer packet = new PacketContainer(PacketType.Play.Server.BOSS);
-        packet.getModifier().write(0, uuid);
-        InternalStructure internalStructure = packet.getStructures().read(1);
-        internalStructure.getChatComponents().write(0, WrappedChatComponent.fromJson(GsonComponentSerializer.gson().serialize(MiniMessage.miniMessage().deserialize(text.getLatestValue()))));
-        internalStructure.getFloat().write(0, Competition.currentCompetition.getProgress());
-        internalStructure.getEnumModifier(BarColor.class, 2).write(0, config.getColor());
-        internalStructure.getEnumModifier(BossBarOverlay.class, 3).write(0, config.getOverlay());
-        internalStructure.getModifier().write(4, false);
-        internalStructure.getModifier().write(5, false);
-        internalStructure.getModifier().write(6, false);
-        return packet;
-    }
-
-    private void sendRemovePacket() {
-        PacketContainer packet = new PacketContainer(PacketType.Play.Server.BOSS);
-        packet.getModifier().write(0, uuid);
-        packet.getModifier().write(1, Reflection.removeBossBarPacket);
-        CustomFishing.getProtocolManager().sendServerPacket(player, packet);
+    private void createBossBar() {
+        activeBar = BossBar.bossBar(MiniMessage.miniMessage().deserialize(text.getLatestValue()), Competition.currentCompetition.getProgress(), BossBar.Color.valueOf(config.getColor().name()), BossBar.Overlay.valueOf(config.getOverlay().name()));
+        player.showBossBar(activeBar);
     }
 
     public boolean hasClaimedJoin() {
