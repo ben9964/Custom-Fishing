@@ -54,9 +54,14 @@ public class ItemStackUtils {
      */
     public static ItemStack getFromItem(Item item) {
         ItemStack itemStack = new ItemStack(item.getMaterial());
+
         if (item.getMaterial() == Material.AIR) return itemStack;
         itemStack.setAmount(item.getAmount());
+
+        // ItemMeta Application
+
         ItemMeta itemMeta = itemStack.getItemMeta();
+
         if (item.getCustomModelData() != 0) itemMeta.setCustomModelData(item.getCustomModelData());
         if (item.isUnbreakable()) itemMeta.setUnbreakable(true);
         if (item.getItemFlags() != null) item.getItemFlags().forEach(itemMeta::addItemFlags);
@@ -93,6 +98,10 @@ public class ItemStackUtils {
             itemMeta.lore(lore);
         }
 
+        itemStack.setItemMeta(itemMeta);
+
+        // NBT Application
+
         NBTItem nbtItem = new NBTItem(itemStack);
         if (item.getCfTag() != null) {
             NBTCompound cfCompound = nbtItem.addCompound("CustomFishing");
@@ -110,8 +119,6 @@ public class ItemStackUtils {
             nbtItem.setString("Totem", item.getTotem());
         }
         if (item.getNbt() != null) NBTUtils.setTags(item.getNbt(), nbtItem);
-
-        itemStack.setItemMeta(itemMeta);
 
         return nbtItem.getItem();
     }

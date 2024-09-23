@@ -17,7 +17,7 @@
 
 package net.momirealms.customfishing.fishing.requirements;
 
-import net.momirealms.biomeapi.BiomeAPI;
+import net.momirealms.customfishing.api.BiomeAPI;
 import net.momirealms.customfishing.fishing.FishingCondition;
 import org.jetbrains.annotations.Nullable;
 

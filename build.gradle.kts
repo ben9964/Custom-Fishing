@@ -42,14 +42,13 @@ dependencies {
     compileOnly("com.google.code.gson:gson:2.10.1")
     compileOnly("net.Indyuce:MMOItems-API:6.9.2-SNAPSHOT")
     compileOnly("io.lumine:MythicLib-dist:1.6-SNAPSHOT")
-    compileOnly("com.comphenix.protocol:ProtocolLib:5.0.0")
+    compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("net.kyori:adventure-api:4.14.0")
     compileOnly("net.kyori:adventure-platform-bukkit:4.3.0")
     compileOnly("net.kyori:adventure-text-minimessage:4.14.0")
     compileOnly("net.kyori:adventure-text-serializer-legacy:4.14.0")
 
-    shadow(fileTree(mapOf("dir" to "libs", "include" to "BiomeAPI.jar")))
     shadow("de.tr7zw:item-nbt-api:2.13.2")
     shadow("org.bstats:bstats-bukkit:3.0.1")
 }
@@ -75,7 +74,6 @@ tasks{
 
         relocate("de.tr7zw", "net.momirealms.customfishing.libs.de.tr7zw")
         relocate("org.bstats", "net.momirealms.customfishing.libs.org.bstats")
-        relocate("net.momirealms.biomeapi", "net.momirealms.customfishing.libs.net.momirealms.biomeapi")
     }
 }
 

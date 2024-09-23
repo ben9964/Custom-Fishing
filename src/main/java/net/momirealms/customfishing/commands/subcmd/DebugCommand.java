@@ -1,7 +1,7 @@
 package net.momirealms.customfishing.commands.subcmd;
 
-import net.momirealms.biomeapi.BiomeAPI;
 import net.momirealms.customfishing.CustomFishing;
+import net.momirealms.customfishing.api.BiomeAPI;
 import net.momirealms.customfishing.api.CustomFishingAPI;
 import net.momirealms.customfishing.commands.AbstractSubCommand;
 import net.momirealms.customfishing.fishing.Effect;
