@@ -68,8 +68,7 @@ public class AdventureUtils {
      */
     public static void consoleMessage(String s) {
         if (s == null) return;
-        Audience au = CustomFishing.getAdventure().sender(Bukkit.getConsoleSender());
-        au.sendMessage(getComponentFromMiniMessage(s));
+        Bukkit.getConsoleSender().sendMessage(getComponentFromMiniMessage(s));
     }
 
     /**
@@ -79,8 +78,7 @@ public class AdventureUtils {
      */
     public static void playerMessage(Player player, String s) {
         if (s == null) return;
-        Audience au = CustomFishing.getAdventure().player(player);
-        au.sendMessage(getComponentFromMiniMessage(s));
+        player.sendMessage(getComponentFromMiniMessage(s));
     }
 
     /**
@@ -93,10 +91,9 @@ public class AdventureUtils {
      * @param out out (ms)
      */
     public static void playerTitle(Player player, String s1, String s2, int in, int duration, int out) {
-        Audience au = CustomFishing.getAdventure().player(player);
         Title.Times times = Title.Times.times(Duration.ofMillis(in), Duration.ofMillis(duration), Duration.ofMillis(out));
         Title title = Title.title(getComponentFromMiniMessage(s1), getComponentFromMiniMessage(s2), times);
-        au.showTitle(title);
+        player.showTitle(title);
     }
 
     /**
@@ -109,10 +106,9 @@ public class AdventureUtils {
      * @param out out (ms)
      */
     public static void playerTitle(Player player, Component s1, Component s2, int in, int duration, int out) {
-        Audience au = CustomFishing.getAdventure().player(player);
         Title.Times times = Title.Times.times(Duration.ofMillis(in), Duration.ofMillis(duration), Duration.ofMillis(out));
         Title title = Title.title(s1, s2, times);
-        au.showTitle(title);
+        player.showTitle(title);
     }
 
     /**
@@ -121,8 +117,7 @@ public class AdventureUtils {
      * @param s actionbar
      */
     public static void playerActionbar(Player player, String s) {
-        Audience au = CustomFishing.getAdventure().player(player);
-        au.sendActionBar(getComponentFromMiniMessage(s));
+        player.sendActionBar(getComponentFromMiniMessage(s));
     }
 
     /**
@@ -135,8 +130,7 @@ public class AdventureUtils {
      */
     public static void playerSound(Player player, Sound.Source source, Key key, float volume, float pitch) {
         Sound sound = Sound.sound(key, source, volume, pitch);
-        Audience au = CustomFishing.getAdventure().player(player);
-        au.playSound(sound);
+        player.playSound(sound);
     }
 
     public static String replaceLegacy(String legacy) {

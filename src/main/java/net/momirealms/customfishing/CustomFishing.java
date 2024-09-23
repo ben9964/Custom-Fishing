@@ -43,7 +43,6 @@ import java.util.TimeZone;
 public final class CustomFishing extends JavaPlugin {
 
     private static CustomFishing plugin;
-    private static BukkitAudiences adventure;
     private static ProtocolManager protocolManager;
     private IntegrationManager integrationManager;
     private FishingManager fishingManager;
@@ -68,7 +67,6 @@ public final class CustomFishing extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        adventure = BukkitAudiences.create(this);
         protocolManager = ProtocolLibrary.getProtocolManager();
         this.updateLegacyFormatContents();
         this.versionHelper = new VersionHelper(this);
@@ -106,7 +104,6 @@ public final class CustomFishing extends JavaPlugin {
         if (this.statisticsManager != null) this.statisticsManager.disable();
         if (this.dataManager != null) this.dataManager.disable();
         if (this.scheduler != null) scheduler.disable();
-        if (adventure != null) adventure.close();
     }
 
     private void registerCommands() {
@@ -232,10 +229,6 @@ public final class CustomFishing extends JavaPlugin {
         getBagDataManager().load();
         getStatisticsManager().unload();
         getStatisticsManager().load();
-    }
-
-    public static BukkitAudiences getAdventure() {
-        return adventure;
     }
 
     public static ProtocolManager getProtocolManager() {
