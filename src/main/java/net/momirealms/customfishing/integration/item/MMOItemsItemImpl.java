@@ -47,7 +47,7 @@ public class MMOItemsItemImpl implements ItemInterface {
         NBTItem nbtItem = new NBTItem(itemStack);
         if (!nbtItem.hasTag("MMOITEMS_MAX_DURABILITY")) return false;
         DurabilityItem durabilityItem = new DurabilityItem(player, itemStack);
-        if (Math.random() < (1 / (double) (itemStack.getEnchantmentLevel(Enchantment.DURABILITY) + 1))) {
+        if (Math.random() < (1 / (double) (itemStack.getEnchantmentLevel(Enchantment.UNBREAKING) + 1))) {
             durabilityItem.decreaseDurability(1);
             final ItemStack newVersion = durabilityItem.toItem();
             if (newVersion == null) return false;

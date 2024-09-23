@@ -96,7 +96,7 @@ public abstract class FishingGame implements Runnable {
         if (playerInventory.getItemInMainHand().getType() != Material.FISHING_ROD && playerInventory.getItemInOffHand().getType() != Material.FISHING_ROD) {
             cancel();
             fishingManager.removeFishingPlayer(player);
-            player.removePotionEffect(PotionEffectType.SLOW);
+            player.removePotionEffect(PotionEffectType.SLOWNESS);
         }
     }
 
@@ -104,7 +104,7 @@ public abstract class FishingGame implements Runnable {
         if (fishHook == null || !fishHook.isValid()) {
             cancel();
             fishingManager.removeFishingPlayer(player);
-            player.removePotionEffect(PotionEffectType.SLOW);
+            player.removePotionEffect(PotionEffectType.SLOWNESS);
         }
     }
 

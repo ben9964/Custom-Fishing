@@ -499,7 +499,7 @@ public class FishingManager extends Function {
         LootImpl loot = nextLoot.remove(uuid);
         VanillaLoot vanilla = vanillaLoot.remove(uuid);
         Effect effect = nextEffect.remove(uuid);
-        player.removePotionEffect(PotionEffectType.SLOW);
+        player.removePotionEffect(PotionEffectType.SLOWNESS);
         if (fishingGame.isSuccess()) {
             if (ConfigManager.rodLoseDurability) loseDurability(player);
             if (hookLoc.getBlock().getType() == Material.LAVA) {
@@ -939,7 +939,7 @@ public class FishingManager extends Function {
                 action.doOn(player);
             }
         }
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, game.getTime() * 20,3));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, game.getTime() * 20,3));
     }
 
     @Override

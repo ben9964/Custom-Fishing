@@ -55,12 +55,9 @@ public class ArmorStandUtils {
     public static PacketContainer getMetaPacket(int id) {
         PacketContainer metaPacket = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
         metaPacket.getIntegers().write(0, id);
-        if (CustomFishing.getInstance().getVersionHelper().isVersionNewerThan1_19_R2()) {
-            WrappedDataWatcher wrappedDataWatcher = createDataWatcher();
-            setValueList(metaPacket, wrappedDataWatcher);
-        } else {
-            metaPacket.getWatchableCollectionModifier().write(0, createDataWatcher().getWatchableObjects());
-        }
+        WrappedDataWatcher wrappedDataWatcher = createDataWatcher();
+        setValueList(metaPacket, wrappedDataWatcher);
+
         return metaPacket;
     }
 
@@ -76,12 +73,9 @@ public class ArmorStandUtils {
     public static PacketContainer getMetaPacket(int id, String text) {
         PacketContainer metaPacket = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
         metaPacket.getIntegers().write(0, id);
-        if (CustomFishing.getInstance().getVersionHelper().isVersionNewerThan1_19_R2()) {
-            WrappedDataWatcher wrappedDataWatcher = createDataWatcher(text);
-            setValueList(metaPacket, wrappedDataWatcher);
-        } else {
-            metaPacket.getWatchableCollectionModifier().write(0, createDataWatcher(text).getWatchableObjects());
-        }
+        WrappedDataWatcher wrappedDataWatcher = createDataWatcher(text);
+        setValueList(metaPacket, wrappedDataWatcher);
+
         return metaPacket;
     }
 

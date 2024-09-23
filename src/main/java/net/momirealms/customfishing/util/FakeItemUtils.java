@@ -24,7 +24,7 @@ public class FakeItemUtils {
         PacketContainer entityPacket = new PacketContainer(PacketType.Play.Server.SPAWN_ENTITY);
         entityPacket.getModifier().write(0, id);
         entityPacket.getModifier().write(1, UUID.randomUUID());
-        entityPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
+        entityPacket.getEntityTypeModifier().write(0, EntityType.ITEM);
         entityPacket.getDoubles().write(0, location.getX());
         entityPacket.getDoubles().write(1, location.getY() - 0.5);
         entityPacket.getDoubles().write(2, location.getZ());
@@ -34,12 +34,9 @@ public class FakeItemUtils {
     public static PacketContainer getMetaPacket(int id, ItemStack itemStack) {
         PacketContainer metaPacket = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
         metaPacket.getIntegers().write(0, id);
-        if (CustomFishing.getInstance().getVersionHelper().isVersionNewerThan1_19_R2()) {
-            WrappedDataWatcher wrappedDataWatcher = createDataWatcher(itemStack);
-            ArmorStandUtils.setValueList(metaPacket, wrappedDataWatcher);
-        } else {
-            metaPacket.getWatchableCollectionModifier().write(0, createDataWatcher(itemStack).getWatchableObjects());
-        }
+        WrappedDataWatcher wrappedDataWatcher = createDataWatcher(itemStack);
+        ArmorStandUtils.setValueList(metaPacket, wrappedDataWatcher);
+
         return metaPacket;
     }
 

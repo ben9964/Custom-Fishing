@@ -17,8 +17,6 @@
 
 package net.momirealms.customfishing.helper;
 
-import de.tr7zw.changeme.nbtapi.utils.MinecraftVersion;
-import de.tr7zw.changeme.nbtapi.utils.VersionChecker;
 import net.momirealms.customfishing.CustomFishing;
 import net.momirealms.customfishing.manager.ConfigManager;
 import net.momirealms.customfishing.util.AdventureUtils;
@@ -26,14 +24,10 @@ import net.momirealms.customfishing.util.AdventureUtils;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class VersionHelper {
-
-    private boolean isNewerThan1_19_R2;
-    private String serverVersion;
     private final CustomFishing plugin;
     private final boolean isSpigot;
     private final boolean isFolia;
@@ -41,57 +35,10 @@ public class VersionHelper {
 
     public VersionHelper(CustomFishing plugin) {
         this.plugin = plugin;
-        isVersionNewerThan1_19_R2();
-        disableUseLessInfo();
         String server_name = plugin.getServer().getName();
         isSpigot = server_name.equals("CraftBukkit");
         isFolia = server_name.equals("DirtyFolia");
         pluginVersion = plugin.getDescription().getVersion();
-    }
-
-    public boolean isVersionNewerThan1_19_R2() {
-        if (serverVersion == null) {
-            serverVersion = plugin.getServer().getClass().getPackage().getName().split("\\.")[3];
-            String[] split = serverVersion.split("_");
-            int main_ver = Integer.parseInt(split[1]);
-            if (main_ver >= 20) isNewerThan1_19_R2 = true;
-            else if (main_ver == 19) isNewerThan1_19_R2 = Integer.parseInt(split[2].substring(1)) >= 2;
-            else isNewerThan1_19_R2 = false;
-        }
-        return isNewerThan1_19_R2;
-    }
-
-    private void disableUseLessInfo() {
-        MinecraftVersion.disableBStats();
-        MinecraftVersion.disableUpdateCheck();
-        VersionChecker.hideOk = true;
-        try {
-            Field field = MinecraftVersion.class.getDeclaredField("version");
-            field.setAccessible(true);
-            MinecraftVersion minecraftVersion;
-            try {
-                minecraftVersion = MinecraftVersion.valueOf(serverVersion.replace("v", "MC"));
-            } catch (IllegalArgumentException ex) {
-                minecraftVersion = MinecraftVersion.UNKNOWN;
-            }
-            field.set(MinecraftVersion.class, minecraftVersion);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-        boolean hasGsonSupport;
-        try {
-            Class.forName("com.google.gson.Gson");
-            hasGsonSupport = true;
-        } catch (Exception ex) {
-            hasGsonSupport = false;
-        }
-        try {
-            Field field= MinecraftVersion.class.getDeclaredField("hasGsonSupport");
-            field.setAccessible(true);
-            field.set(Boolean.class, hasGsonSupport);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void checkUpdate() {

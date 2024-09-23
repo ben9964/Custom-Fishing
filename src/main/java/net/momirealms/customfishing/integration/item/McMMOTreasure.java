@@ -114,10 +114,10 @@ public class McMMOTreasure {
         double diceRoll = Misc.getRandom().nextDouble() * 100;
         int luck;
         if (player.getInventory().getItemInMainHand().getType() == Material.FISHING_ROD) {
-            luck = player.getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LUCK);
+            luck = player.getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LUCK_OF_THE_SEA);
         }
         else {
-            luck = player.getInventory().getItemInOffHand().getEnchantmentLevel(Enchantment.LUCK);
+            luck = player.getInventory().getItemInOffHand().getEnchantmentLevel(Enchantment.LUCK_OF_THE_SEA);
         }
         diceRoll *= (1.0 - luck * mcMMO.p.getGeneralConfig().getFishingLureModifier() / 100);
         FishingTreasure treasure = null;
