@@ -12,7 +12,7 @@ repositories {
     maven {name = "papermc-repo"; url = uri("https://papermc.io/repo/repository/maven-public/")}
     maven {name = "sonatype-repo"; url = uri("https://oss.sonatype.org/content/groups/public/")}
     maven {name = "dmulloy2-repo"; url = uri("https://repo.dmulloy2.net/repository/public/")}
-    maven {name = "clip-repo"; url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")}
+    maven {name = "placeholderapi"; url = uri("https://repo.extendedclip.com/releases/") }
     maven {name = "codemc-repo"; url = uri("https://repo.codemc.org/repository/maven-public/")}
     maven {name = "sk89q-repo"; url = uri("https://maven.enginehub.org/repo/")}
     maven {name = "jitpack-repo"; url = uri("https://jitpack.io")}
@@ -35,7 +35,7 @@ dependencies {
     compileOnly("com.zaxxer:HikariCP:5.0.1")
     compileOnly("commons-io:commons-io:2.11.0")
     compileOnly("redis.clients:jedis:4.4.3")
-    compileOnly("me.clip:placeholderapi:2.11.3")
+    compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("io.lumine:Mythic-Dist:5.2.1")
     compileOnly("dev.dejvokep:boosted-yaml:1.3.1")
     compileOnly("org.mariadb.jdbc:mariadb-java-client:3.1.4")

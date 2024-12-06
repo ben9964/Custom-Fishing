@@ -266,10 +266,10 @@ public class ItemStackUtils {
         if (max - min < 0) return -1;
         float size = (float) ((min + Math.random() * (max - min)) * sizeMultiplier);
         String sizeText = String.format("%.1f", size);
-        NBTCompound nbtCompound = nbtItem.getCompound("display");
-        if (nbtCompound == null || !nbtCompound.hasTag("Lore")) return size;
-        List<String> lore = nbtCompound.getStringList("Lore");
-        lore.replaceAll(s -> s.replace("{size}", sizeText));
+
+        List<Component> lore = nbtItem.getItem().getItemMeta().lore();
+        if (lore == null || lore.isEmpty()) return size;
+        lore.replaceAll(s -> s.replaceText(builder -> builder.matchLiteral("{size}").replacement(sizeText)));
         NBTCompound fishMetaCompound = nbtItem.addCompound("FishMeta");
         fishMetaCompound.setFloat("size", size);
         return size;
