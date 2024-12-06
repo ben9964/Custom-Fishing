@@ -267,9 +267,15 @@ public class ItemStackUtils {
         float size = (float) ((min + Math.random() * (max - min)) * sizeMultiplier);
         String sizeText = String.format("%.1f", size);
 
+        ItemMeta meta = nbtItem.getItem().getItemMeta();
+        if (meta == null) return size;
+
         List<Component> lore = nbtItem.getItem().getItemMeta().lore();
         if (lore == null || lore.isEmpty()) return size;
         lore.replaceAll(s -> s.replaceText(builder -> builder.matchLiteral("{size}").replacement(sizeText)));
+        meta.lore(lore);
+        nbtItem.getItem().setItemMeta(meta);
+
         NBTCompound fishMetaCompound = nbtItem.addCompound("FishMeta");
         fishMetaCompound.setFloat("size", size);
         return size;
